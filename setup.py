@@ -20,4 +20,12 @@ except VersionConflict:
 
 
 if __name__ == "__main__":
-    setup(use_pyscaffold=True)
+    # get version, passed as argument
+    file = open("version.txt", "r")
+    my_ver = file.read()
+    setup(use_pyscaffold=False,
+          name='parrocchie-valmalenco-FM',
+          packages=['parrocchie_valmalenco_FM'],
+          package_dir={'': 'src'},
+          version=my_ver)
+    file.close()
