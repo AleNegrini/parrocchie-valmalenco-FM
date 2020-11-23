@@ -1,9 +1,9 @@
-from constants import Constants
+from parrocchie_valmalenco_fm.constants import Constants
 import time
 import sys
 import subprocess
-from utils import get_current_date, get_current_time, active_slot
-from reader import read_file
+from parrocchie_valmalenco_fm.utils import get_current_date, get_current_time, active_slot
+from parrocchie_valmalenco_fm.reader import read_file
 
 if __name__ == '__main__':
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
             if sys.platform != 'darwin':
                 proc = subprocess.Popen(['powershell.exe',
-                                         'C:\\Program Files\VideoLAN\VLC\vlc.exe' + rtsp_link],
+                                         "C:/'Program Files'/VideoLAN/VLC/vlc.exe " + rtsp_link],
                                         stdout=sys.stdout)
             else:
                 proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + rtsp_link], shell=True)
@@ -42,7 +42,9 @@ if __name__ == '__main__':
         if last_slot != active_slot(current_date, current_time, calendar) and \
                 active_slot(current_date, current_time, calendar) is None:
             if sys.platform != 'darwin':
-                subprocess.Popen(['Stop-Process -ID ' + str(pid_vlc) + ' -Force'], shell=True)
+                subprocess.Popen(['powershell.exe',
+                                  'Stop-Process -name vlc -Force'],
+                                  shell=True)
             else:
                 subprocess.Popen(['kill -9 '+str(pid_vlc)], shell=True)
             print("Stopped " + rtsp_link+" at "+current_time)
