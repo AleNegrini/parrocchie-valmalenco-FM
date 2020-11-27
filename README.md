@@ -24,6 +24,7 @@ Il protocollo streaming utilizzato da ciascuna videocamera è _rtsp_.
 
 ## Obiettivo
 Attualmente le celebrazioni vengono trasmesse in radio in maniera manuale. 
+
 L'obiettivo è quello di sviluppare una soluzione in grado di rendere l'intero processo completamente automatico, secondo 
 un calendario di celebrazioni dato in input. 
 
@@ -42,6 +43,7 @@ In fase di avvio, il programma effettua il parsing del file di configurazione
 
 Ogni 60 secondi va a verificare se all'interno del file _orari.csv_ ci sono messe da trasmettere. Se non ci sono messe 
 da trasmettere, attende 60 secondi ed effettua un nuovo controllo, e così via. 
+
 Se invece, c'è una celebrazione da trasmettere due sono gli step che vengono fatti:
 - VLC viene lanciato da linea di comando, in modalità "Apri rete ...". L'_RSTP URL_ viene costruito dinamicamente in 
 base alla messa che bisogna trasmettere, attivando l'uscita audio del PC. 
@@ -55,12 +57,15 @@ http://<IP_relay>/relays.cgi?relay=1
 
 Lo stesso succede per lo spegnimento:
 - lo script chiude VLC da linea di comando, disattivando l'uscita audio del PC. 
-- il relay, viene ri-sollecitato con la stessa chiamata API
+- il relay, viene ri-sollecitato con la stessa chiamata API. In questo modo, viene "riattaccato" il cicuito per cui
+viene trasmessa in radio Radio Mater.
 
 ## Startup
 Per poter godere di un servizio continuativo, lo script deve essere attivo 24/7. 
+
 Di default, viene lanciato allo startup del pc attraverso un file `activate.bat` che viene lanciato automaticamente a
 startup time. 
+
 Qualora di volesse riavviarlo, killare il processo da 'Gestione Risorse' e poi riavviare con:
 - se si vuole eseguire in background, navigare all'interno della folder `src` e lanciare: 
 ```
@@ -94,6 +99,7 @@ Salva il file, e chiudi.
 ### Come cambio la configurazione di una telecamera ?
 Aprire il file _config.ini_ ed effettuare il cambio di configurazione (cambio IP, cambio user, ...) relativa al comune 
 specifico che si vuole cambiare.
+
 Per poter fare in modo che il programma percepisca le nuove configurazioni bisogna riavviare il programma (vedi sezione
 _startup_ per maggiori dettagli). 
 
