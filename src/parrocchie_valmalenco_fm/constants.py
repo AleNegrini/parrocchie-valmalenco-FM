@@ -19,7 +19,7 @@ class Constants:
     for section in config.sections():
         ip_dict[section] = config.items(section)[0][1]
         port_dict[section] = config.items(section)[1][1]
-        channel_dict[section] = config.items(section)[2][1]
-        user_dict[section] = config.items(section)[3][1]
-        pass_dict[section] = config.items(section)[4][1]
+        #channel_dict[section] = config.items(section)[2][1]
+        user_dict[section] = config.items(section)[2][1]
+        pass_dict[section] = config.items(section)[3][1]
 
