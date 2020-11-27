@@ -47,7 +47,7 @@ Se invece, c'è una celebrazione da trasmettere due sono gli step che vengono fa
 base alla messa che bisogna trasmettere, attivando l'uscita audio del PC. 
 Il formato dell'url rtsp è: `rtsp://<username>:<password>@<IPCAMERA>:<PORT>`. 
 - come secondo step, è necessario sollecitare un relay che "stacca" il circuito per cui, in assenza di celebrazioni, 
-trasmettere Radio Mater e "attacca" l'audio in uscita dal PC.
+trasmette Radio Mater e "attacca" l'audio in uscita dal PC.
 Il relay in oggetto è un "IP Relay", per cui viene essere sollecitato da una chiamata API all'endpoint:
 ```
 http://<IP_relay>/relays.cgi?relay=1
@@ -111,9 +111,11 @@ Per poter fare in modo che il programma percepisca le nuove configurazioni bisog
 _startup_ per maggiori dettagli). 
 
 ## TODO
+- [ ] Spostare l'IP del relay in un file esterno
 - [ ] Gli eventi di start e stop delle celebrazioni devono essere loggate su un file esterno
 - [ ] Aggiungere supporto per celebrazioni a cavallo di due giorni
-- [ ] Verificare stato relay, dopo averlo acceso/spento
+- [ ] Migliorare la gestione degli errori a runtime
+- [ ] Migliorare la gestione dello stato del relay, dopo averlo acceso/spento
 - [ ] Sviluppo interfaccia grafica per inserimento nuove celebrazioni in maniera più easy
 - [ ] Aggiungere supporto che verifichi che non ci siano celebrazioni sovrapposte
 - [ ] Aggiungere possibilità di inserire eventi ricorrenti
