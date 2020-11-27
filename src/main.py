@@ -30,12 +30,14 @@ if __name__ == '__main__':
 
             if sys.platform != 'darwin':
                 proc = subprocess.Popen(['powershell.exe',
-                                         "C:/'Program Files'/VideoLAN/VLC/vlc.exe " + rtsp_link + " --novideo --zoom=0.20"],
+                                         "C:/'Program Files'/VideoLAN/VLC/vlc.exe " + rtsp_link +
+                                         " --novideo --zoom=0.20"],
                                         stdout=sys.stdout)
             else:
-                proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + rtsp_link], shell=True)
+                proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + rtsp_link +
+                                         " --novideo --zoom=0.20"],
+                                        shell=True)
             r = requests.post('http://192.168.1.199/relays.cgi?relay=1')
-            #print(r)
             print("Started "+rtsp_link+" at "+current_time)
             pid_vlc = proc.pid
 
