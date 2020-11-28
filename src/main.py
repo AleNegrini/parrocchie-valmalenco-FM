@@ -61,13 +61,10 @@ if __name__ == '__main__':
                                   'Stop-Process -name vlc -Force'],
                                   shell=True)
             else:
-                subprocess.Popen(['kill -9 '+str(pid_vlc)], shell=True)
+                subprocess.Popen(['kill -9 ' + str(pid_vlc)], shell=True)
             r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
-            print("Stopped " + rtsp_link+" at "+current_time)
+            print("Stopped " + rtsp_link + " at "+current_time)
             last_slot = active_slot(current_date, current_time, calendar)
             pid_vlc = None
 
         time.sleep(60)
-
-
-

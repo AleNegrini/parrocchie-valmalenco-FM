@@ -1,6 +1,8 @@
 import os
 import configparser
 
+from typing import List
+
 DEFAULT_CONFIG_FOLDERS_SEARCH = ['../resources', 'resources']
 
 
@@ -9,9 +11,15 @@ class Config:
     def __init__(self, folders=DEFAULT_CONFIG_FOLDERS_SEARCH):
         self.config_folders = folders
 
-    def config_check(self, file_names):
+    def config_check(self, file_names: List[str]):
         """
-        Check the presence of the specified config files and return the location
+        Check the presence of the specified config files and return the path for each given file name
+        i.e.
+        input: "config.ini"
+        return:
+        {
+            "config.ini": "../resources/config.ini"
+        }
         """
         path_dict = {}
 
@@ -32,7 +40,10 @@ class Config:
         print("Configuration check - PASSED.")
         return path_dict
 
-    def get_relay_ip(self, file_path):
+    def get_relay_ip(self, file_path: str):
+        """
+        Return the relay ip for the given relay configuration file
+        """
         config = configparser.ConfigParser()
         config.read(file_path)
 
