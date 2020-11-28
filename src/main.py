@@ -9,14 +9,14 @@ from parrocchie_valmalenco_fm.camera_config import CameraConfig
 
 ORARI_FILE = 'orari.csv'
 RELAY_CONFIG_FILE = 'config-relay.ini'
-CMAERA_CONFIG_FILE = 'config.ini'
+CAMERA_CONFIG_FILE = 'config.ini'
 
 if __name__ == '__main__':
 
     # validate the presence of required config files
     config = Config()
-    config_path_dict = config.config_check([ORARI_FILE, RELAY_CONFIG_FILE, CMAERA_CONFIG_FILE])
-    cameras = CameraConfig(config_path_dict[CMAERA_CONFIG_FILE])
+    config_path_dict = config.config_check([ORARI_FILE, RELAY_CONFIG_FILE, CAMERA_CONFIG_FILE])
+    cameras = CameraConfig(config_path_dict[CAMERA_CONFIG_FILE])
     relay_ip = config.get_relay_ip(config_path_dict[RELAY_CONFIG_FILE])
 
     last_slot = None
@@ -36,8 +36,6 @@ if __name__ == '__main__':
                   cameras.ip_dict[active_slot(current_date, current_time, calendar)] + \
                   ":" + \
                   cameras.port_dict[active_slot(current_date, current_time, calendar)]
-                  # "/Streaming/Channels/"+ \
-                  # Constants.channel_dict[active_slot(current_date, current_time, calendar)]
 
             if sys.platform != 'darwin':
                 proc = subprocess.Popen(['powershell.exe',

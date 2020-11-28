@@ -3,7 +3,7 @@ import configparser
 
 from typing import List
 
-DEFAULT_CONFIG_FOLDERS_SEARCH = ['../resources', 'resources']
+DEFAULT_CONFIG_FOLDERS_SEARCH = ['../../resources', '../resources', 'resources']
 
 
 class Config:
