@@ -27,7 +27,13 @@ class Calendar:
                         dict_day_based[mass.start_day].append((current_start, current_end))
                         break
 
-    def active_slot(self, date, time):
+    def active_slot(self, date: str, time: str):
+        """
+        Return active slot for a given date and time
+        :param date: Date in format "dd/mm/YYYY"
+        :param time: Time in the format "hh:mm"
+        :return the location for the active slot
+        """
         for mass in self.mass_list:
             if date == mass.start_day and mass.start_hour <= str(time) < mass.end_hour:
                 return mass.location
