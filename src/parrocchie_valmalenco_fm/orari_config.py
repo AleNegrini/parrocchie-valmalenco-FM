@@ -17,6 +17,7 @@ class OrariConfig:
         :return: dictionary
         """
 
+        self.calendar.mass_list = []
         with open(self.path) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
