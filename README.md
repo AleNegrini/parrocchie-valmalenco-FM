@@ -117,8 +117,8 @@ Per poter fare in modo che il programma percepisca le nuove configurazioni bisog
 _startup_ per maggiori dettagli). 
 
 ## TODO
-- [ ] Spostare l'IP del relay in un file esterno
 - [ ] Gli eventi di start e stop delle celebrazioni devono essere loggate su un file esterno
+- [ ] Aggiungere sigla iniziale e sigla finale
 - [ ] Aggiungere supporto per celebrazioni a cavallo di due giorni
 - [ ] Migliorare la gestione degli errori a runtime
 - [ ] Migliorare la gestione dello stato del relay, dopo averlo acceso/spento
