@@ -48,6 +48,6 @@ MANIFEST
 
 # Per-project virtualenvs
 .venv*/
-**/orari.csv
+resources/orari.csv
 resources/config_nvr.ini
 resources/config.ini
