@@ -47,6 +47,7 @@ if __name__ == '__main__':
 
                 # 1° Step: trigger relay
                 r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
+                time.sleep(2)
 
                 if sys.platform != 'darwin':
 
@@ -93,6 +94,7 @@ if __name__ == '__main__':
                     subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + path_audio_end +
                                              ' vlc://quit'], shell=True)
 
+                time.sleep(2)
                 r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
                 print("Stopped " + url + " at " + current_time+" due to the mic unreachability")
                 pid_vlc = None
@@ -117,6 +119,8 @@ if __name__ == '__main__':
                 # 2° Step: play the stop event announcement
                 proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + path_audio_end +
                                          ' vlc://quit'], shell=True)
+
+            time.sleep(2)
             r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
             print("Stopped " + url + " at " + current_time + " due to timeout expiration")
             pid_vlc = None
