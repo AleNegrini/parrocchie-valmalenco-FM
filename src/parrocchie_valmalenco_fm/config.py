@@ -1,5 +1,7 @@
 import os
 import configparser
+from urllib.error import URLError, HTTPError
+from urllib.request import urlopen
 
 from typing import List
 
@@ -52,3 +54,30 @@ class Config:
 
         return ip
 
+    @staticmethod
+    def get_streaming_url(ip, port):
+        """
+        Return the url from which the stream will be listened
+        Args:
+            ip: cam IP address
+            port: cam PORT
+        """
+        return 'http://' + ip + ":" + port
+
+    @staticmethod
+    def is_reachable(url='https://www.youtube.com/watch?v=aqWyyfrGujE', timeout=5):
+        """
+        It checks whether a URL is reachable and returns values accordingly
+        Args:
+            url: url to test
+            timeout: timeout seconds
+        Returns:
+            It returns a boolean value. True if the URL is reachable, False otherwise.
+        """
+        try:
+            response_code = urlopen(url, timeout=timeout).getcode()
+            print(response_code)
+            return True
+        except (HTTPError, URLError) as e:
+            print(url + " is unreachable")
+            return False
