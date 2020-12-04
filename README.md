@@ -46,10 +46,12 @@ Se il microfono è acceso, sarà acceso anche il broadcast MP3 e sarà visibile 
 Per cui, grazie ad una combinazione della coppia di eventi _orario_ e _raggiungibilità broadcast MP3_, la celebrazione viene trasmessa.
 
 **Evento di start**
+
 La trasmissione è eligibile ad essere mandata in onda, se l'orario attuale si trova tra _l'orario di partenza_ e _l'orario 
 di fine massima_. Per poterla mandare in onda, il dispositivo Ethernet MP3 deve però essere raggiungibile in rete.   
 
 **Evento di stop**
+
 Due sono i possibili eventi di stop della trasmissione: 
 - il termine massimo di conclusione della celebrazione non è ancora stato raggiunto, ma il dispositivo non è più raggiungibile in rete 
 (timeout di connessione di default è 5 secondi)
