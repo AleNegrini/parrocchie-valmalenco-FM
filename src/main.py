@@ -35,14 +35,31 @@ if __name__ == '__main__':
 
             # build the streaming url
             url = Config.get_streaming_url(cameras.ip_dict[active_slot], cameras.port_dict[active_slot])
+            path_audio_start = '../../resources/audio/'+active_slot+'_inizio.mp3'
+            path_audio_end = '../../resources/audio/' + active_slot + '_fine.mp3'
+            print(path_audio_start)
 
             # the url is now eligible to be started. However, until the endpoint is not reachable, it can't be started
             if Config.is_reachable(url) and not streaming_started:
                 if sys.platform != 'darwin':
+
+                    # 1° Step: play the start event announcement
+                    proc = subprocess.Popen(['powershell.exe', "C:/'Program Files'/VideoLAN/VLC/vlc.exe "
+                                             + path_audio_start + ' vlc://quit'], stdout=sys.stdout)
+                    time.sleep(15)
+
+                    # 2° Step: play the stream
                     proc = subprocess.Popen(['powershell.exe',
                                              "C:/'Program Files'/VideoLAN/VLC/vlc.exe " + url +
                                              " --novideo"], stdout=sys.stdout)
                 else:
+
+                    # 1° Step: play the start event announcement
+                    proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + path_audio_start +
+                                             ' vlc://quit'], shell=True)
+                    time.sleep(15)
+
+                    # 2° Step: play the stream
                     proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + url +
                                              " --novideo"], shell=True)
 
@@ -53,21 +70,48 @@ if __name__ == '__main__':
 
             if not Config.is_reachable(url) and streaming_started:
                 if sys.platform != 'darwin':
+                    # 1° Step: stop the stream
                     subprocess.Popen(['powershell.exe', 'Stop-Process -name vlc -Force'], shell=True)
+                    time.sleep(5)
+
+                    # 2° Step: play the stop event announcement
+                    proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + path_audio_end +
+                                             ' vlc://quit'], shell=True)
+
                 else:
+                    # 1° Step: stop the stream
                     subprocess.Popen(['kill -9 ' + str(pid_vlc)], shell=True)
+                    time.sleep(5)
+
+                    # 2° Step: play the stop event announcement
+                    proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + path_audio_end +
+                                             ' vlc://quit'], shell=True)
+
                 r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
                 print("Stopped " + url + " at " + current_time+" due to the mic unreachability")
                 pid_vlc = None
                 streaming_started = False
 
+        # STOP EVENT
         if active_slot is None and streaming_started:
-            #STOP EVENT
             if sys.platform != 'darwin':
+                # 1° Step: stop the stream
                 subprocess.Popen(['powershell.exe', 'Stop-Process -name vlc -Force'], shell=True)
+                time.sleep(5)
+
+                # 2° Step: play the stop event announcement
+                proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + path_audio_end +
+                                         ' vlc://quit'], shell=True)
+
             else:
+                # 1° Step: stop the stream
                 subprocess.Popen(['kill -9 ' + str(pid_vlc)], shell=True)
-            # r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
+                time.sleep(5)
+
+                # 2° Step: play the stop event announcement
+                proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + path_audio_end +
+                                         ' vlc://quit'], shell=True)
+            r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
             print("Stopped " + url + " at " + current_time + " due to timeout expiration")
             pid_vlc = None
             streaming_started = False
