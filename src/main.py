@@ -44,29 +44,32 @@ if __name__ == '__main__':
 
             # the url is now eligible to be started. However, until the endpoint is not reachable, it can't be started
             if Config.is_reachable(url) and not streaming_started:
+
+                # 1° Step: trigger relay
+                r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
+
                 if sys.platform != 'darwin':
 
-                    # 1° Step: play the start event announcement
+                    # 2° Step: play the start event announcement
                     proc = subprocess.Popen(['powershell.exe', "C:/'Program Files'/VideoLAN/VLC/vlc.exe "
                                              + path_audio_start + ' vlc://quit'], stdout=sys.stdout)
                     time.sleep(15)
 
-                    # 2° Step: play the stream
+                    # 3° Step: play the stream
                     proc = subprocess.Popen(['powershell.exe',
                                              "C:/'Program Files'/VideoLAN/VLC/vlc.exe " + url +
                                              " --novideo"], stdout=sys.stdout)
                 else:
 
-                    # 1° Step: play the start event announcement
+                    # 2° Step: play the start event announcement
                     proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + path_audio_start +
                                              ' vlc://quit'], shell=True)
                     time.sleep(15)
 
-                    # 2° Step: play the stream
+                    # 3° Step: play the stream
                     proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + url +
                                              " --novideo"], shell=True)
 
-                r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
                 print("Started listening from "+url+" at "+current_time)
                 pid_vlc = proc.pid
                 streaming_started = True
