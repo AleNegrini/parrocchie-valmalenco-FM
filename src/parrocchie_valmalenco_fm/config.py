@@ -65,7 +65,7 @@ class Config:
         return 'http://' + ip + ":" + port
 
     @staticmethod
-    def is_reachable(url='https://www.youtube.com/watch?v=aqWyyfrGujE', timeout=5):
+    def is_reachable(url, timeout=5):
         """
         It checks whether a URL is reachable and returns values accordingly
         Args:

@@ -1,5 +1,6 @@
 import time
 import sys
+import requests
 import subprocess
 from parrocchie_valmalenco_fm.utils import get_current_date, get_current_time
 from parrocchie_valmalenco_fm.orari_config import OrariConfig
@@ -36,7 +37,7 @@ if __name__ == '__main__':
             url = Config.get_streaming_url(cameras.ip_dict[active_slot], cameras.port_dict[active_slot])
 
             # the url is now eligible to be started. However, until the endpoint is not reachable, it can't be started
-            if Config.is_reachable() and not streaming_started:
+            if Config.is_reachable(url) and not streaming_started:
                 if sys.platform != 'darwin':
                     proc = subprocess.Popen(['powershell.exe',
                                              "C:/'Program Files'/VideoLAN/VLC/vlc.exe " + url +
@@ -45,17 +46,17 @@ if __name__ == '__main__':
                     proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + url +
                                              " --novideo"], shell=True)
 
-                #r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
+                r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
                 print("Started listening from "+url+" at "+current_time)
                 pid_vlc = proc.pid
                 streaming_started = True
 
-            if not Config.is_reachable() and streaming_started:
+            if not Config.is_reachable(url) and streaming_started:
                 if sys.platform != 'darwin':
                     subprocess.Popen(['powershell.exe', 'Stop-Process -name vlc -Force'], shell=True)
                 else:
                     subprocess.Popen(['kill -9 ' + str(pid_vlc)], shell=True)
-                # r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
+                r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
                 print("Stopped " + url + " at " + current_time+" due to the mic unreachability")
                 pid_vlc = None
                 streaming_started = False
