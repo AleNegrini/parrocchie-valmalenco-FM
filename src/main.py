@@ -21,6 +21,8 @@ if __name__ == '__main__':
     relay_ip = config.get_relay_ip(config_path_dict[RELAY_CONFIG_FILE])
     orari_config = OrariConfig(config_path_dict[ORARI_FILE])
 
+    sigla_path_dict = config.sigla_check()
+
     pid_vlc = None
     streaming_started = False
 
@@ -35,9 +37,10 @@ if __name__ == '__main__':
 
             # build the streaming url
             url = Config.get_streaming_url(cameras.ip_dict[active_slot], cameras.port_dict[active_slot])
-            path_audio_start = '../../resources/audio/'+active_slot+'_inizio.mp3'
-            path_audio_end = '../../resources/audio/' + active_slot + '_fine.mp3'
+            path_audio_start = sigla_path_dict[active_slot+'_inizio.mp3']
+            path_audio_end = sigla_path_dict[active_slot + '_fine.mp3']
             print(path_audio_start)
+            print(path_audio_end)
 
             # the url is now eligible to be started. However, until the endpoint is not reachable, it can't be started
             if Config.is_reachable(url) and not streaming_started:
