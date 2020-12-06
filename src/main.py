@@ -42,13 +42,11 @@ if __name__ == '__main__':
             print(path_audio_start)
             print(path_audio_end)
 
-            print(Config.check_ping(cameras.ip_dict[active_slot]))
-
             # the url is now eligible to be started. However, until the endpoint is not reachable, it can't be started
             if Config.check_ping(cameras.ip_dict[active_slot]) and not streaming_started:
 
                 # 1° Step: trigger relay
-                #r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
+                r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
                 time.sleep(2)
 
                 if sys.platform != 'darwin':
@@ -97,7 +95,7 @@ if __name__ == '__main__':
                                              ' vlc://quit'], shell=True)
 
                 time.sleep(2)
-                #r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
+                r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
                 print("Stopped " + url + " at " + current_time+" due to the mic unreachability")
                 pid_vlc = None
                 streaming_started = False
@@ -123,7 +121,7 @@ if __name__ == '__main__':
                                          ' vlc://quit'], shell=True)
 
             time.sleep(2)
-            #r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
+            r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
             print("Stopped " + url + " at " + current_time + " due to timeout expiration")
             pid_vlc = None
             streaming_started = False

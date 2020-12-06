@@ -1,8 +1,5 @@
 import os
-import time
 import configparser
-from urllib.error import URLError, HTTPError
-from urllib.request import urlopen
 from ping3 import ping
 
 from typing import List
@@ -111,7 +108,7 @@ class Config:
         return 'http://' + ip + ":" + port
 
     @staticmethod
-    def is_reachable(url, timeout=5):
+    def check_ping(url):
         """
         It checks whether a URL is reachable and returns values accordingly
         Args:
@@ -120,21 +117,11 @@ class Config:
         Returns:
             It returns a boolean value. True if the URL is reachable, False otherwise.
         """
-        try:
-            response_code = urlopen(url, timeout=timeout).getcode()
-            print(response_code)
-            return True
-        except (HTTPError, URLError) as e:
-            print(url + " is unreachable")
-            return False
-
-    @staticmethod
-    def check_ping(url):
 
         response = ping(url)
         if response is None:
-            print(url + "is unreachable")
+            print(url + " ping failed")
             return False
         else:
-            print(url + "is reachable")
+            print(url + " ping successfull")
             return True
