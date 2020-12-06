@@ -19,3 +19,8 @@ Version 2.0.0
 - Audio should not be taken from videocameras any more
 - Audio must be taken from Ethernet MP3 broadcast devices, therefore the streaming URL has been changed
 - The start and stop event changed
+
+Version 2.1.0
+===========
+
+- Sigla in and sigla out have been added beofre and after the event transmission
