@@ -1,7 +1,9 @@
 import os
+import time
 import configparser
 from urllib.error import URLError, HTTPError
 from urllib.request import urlopen
+from ping3 import ping
 
 from typing import List
 
@@ -125,3 +127,14 @@ class Config:
         except (HTTPError, URLError) as e:
             print(url + " is unreachable")
             return False
+
+    @staticmethod
+    def check_ping(url):
+
+        response = ping(url)
+        if response is None:
+            print(url + "is unreachable")
+            return False
+        else:
+            print(url + "is reachable")
+            return True
