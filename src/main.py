@@ -94,7 +94,7 @@ if __name__ == '__main__':
                     subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + path_audio_end +
                                              ' vlc://quit'], shell=True)
 
-                time.sleep(2)
+                time.sleep(15)
                 r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
                 print("Stopped " + url + " at " + current_time+" due to the mic unreachability")
                 pid_vlc = None
@@ -120,12 +120,11 @@ if __name__ == '__main__':
                 proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + path_audio_end +
                                          ' vlc://quit'], shell=True)
 
-            time.sleep(2)
+            time.sleep(15)
             r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
             print("Stopped " + url + " at " + current_time + " due to timeout expiration")
             pid_vlc = None
             streaming_started = False
             last_slot = None
-
 
         time.sleep(60)
