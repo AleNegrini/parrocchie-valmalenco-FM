@@ -71,9 +71,12 @@ il formato è corretto.
 Ogni 60 secondi va a verificare se all'interno del file _orari.csv_ ci sono messe da trasmettere. Se non ci sono messe 
 da trasmettere, attende 60 secondi ed effettua un nuovo controllo, e così via. 
 
-Se invece, c'è una celebrazione da trasmettere due sono gli step che vengono fatti:
-- finchè il dispositivo Ethernet MP3 non è raggiungibile in rete, non viene fatto niente e ogni minuto viene fatto un controllo.  
-- appena il dispositivo risulta raggiungibile, VLC viene lanciato da linea di comando, in modalità "Apri rete ...". 
+Se invece, c'è una celebrazione da trasmettere gli step che vengono fatti sono:
+- finchè il dispositivo Ethernet MP3 non è raggiungibile in rete, non viene fatto niente e ogni minuto viene rifatto un controllo. 
+- appena il dispositivo risulta raggiungibile, VLC viene lanciato da linea di comando:
+    1) per prima cosa viene lanciata la sigla che comunica da quale chiesa si sta trasmettendo
+    2) poi viene lanciato lo stream, in modalità "Apri rete ...". 
+    
 L'_URL_ viene costruito dinamicamente in base alla messa che bisogna trasmettere, attivando l'uscita audio del PC. 
 Il formato dell'url è: `http://<username>:<password>@<IP>:<PORT>`. 
 - come secondo step, è necessario sollecitare un relay che "stacca" il circuito per cui, in assenza di celebrazioni, 
@@ -84,7 +87,8 @@ http://<IP_relay>/relays.cgi?relay=1
 ```
 
 Lo stesso succede per lo spegnimento (vedi sopra i due possibili evneti di spegnimento):
-- lo script chiude VLC da linea di comando, disattivando l'uscita audio del PC. 
+- lo script chiude VLC da linea di comando, disattivando l'uscita audio del PC
+- viene avviata la sigla di termine trasmissione, relativa a quella chiesa
 - il relay, viene ri-sollecitato con la stessa chiamata API. In questo modo, viene "riattaccato" il cicuito per cui
 viene trasmessa in radio Radio Maria.
 
