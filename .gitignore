@@ -47,7 +47,7 @@ cover/*
 MANIFEST
 
 # Per-project virtualenvs
-.venv*/
+venv/*
 **/orari.csv
 resources/config_nvr.ini
 resources/config.ini
