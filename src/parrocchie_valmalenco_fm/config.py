@@ -54,7 +54,9 @@ class Config:
                                       'primolo_inizio.mp3',
                                       'primolo_fine.mp3',
                                       'torre_inizio.mp3',
-                                      'torre_fine.mp3'
+                                      'torre_fine.mp3',
+                                      'regia_inizio.mp3',
+                                      'regia_fine.mp3'
                                       ]):
         """
         Checks the presence of the specified sigla audio (both start and end)
@@ -118,7 +120,7 @@ class Config:
             It returns a boolean value. True if the URL is reachable, False otherwise.
         """
 
-        response = ping(url)
+        response = ping(dest_addr=url, timeout=59)
         if response is None:
             print(url + " ping failed")
             return False
