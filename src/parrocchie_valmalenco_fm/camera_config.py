@@ -76,6 +76,5 @@ class CameraConfig:
         logging.info("Starting ping test threads")
         # for no in CameraConfig.get_fake_nodes():  # uncomment for testing offline
         for no in self.__get_nodes():  # comment for testing offline
-            logging.info(no)
             x = threading.Thread(target=CameraConfig.ping_and_log, args=(no, logging))
             x.start()
