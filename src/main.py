@@ -39,7 +39,8 @@ if __name__ == '__main__':
     # watch the last lines of the log:
     # tail -n 15 -F app.log
     if len(sys.argv) > 1:
-        cameras.start_ping_test_threads(logging)
+        cameras.start_ping_test_threads(logging, 3600)  # test with cameras ip
+        # CameraConfig.fake_start_ping_test_threads(logging, 10)  # test with fake local addresses
 
     while True:
         current_date = get_current_date()
