@@ -32,15 +32,24 @@ if __name__ == '__main__':
     # logging settings
     logging.basicConfig(filename='app.log', level=logging.DEBUG, filemode='a', format='%(asctime)s - %(message)s')
 
-    logging.info('Program started')
+    # BRANCH AND VERSION
+    branch = "ping-test"
+    version = "2.1.0"  # TODO: read from version.txt ?
+    logging.info('^^^^^ Program started (branch={},version={}) ^^^^^'.format(branch, version))
 
     # to start the ping threads:
-    # pythonw main.py random_string
+    # pythonw main.py [test [local]]
+    # test --> start ping tests on each node
+    # local --> test fake nodes (my local LAN nodes), do not start the normal loop
     # watch the last lines of the log:
     # tail -n 15 -F app.log
-    if len(sys.argv) > 1:
-        cameras.start_ping_test_threads(logging, 3600)  # test with cameras ip
-        # CameraConfig.fake_start_ping_test_threads(logging, 10)  # test with fake local addresses
+    param_local = False;
+    if 'test' in sys.argv:
+        if 'local' in sys.argv:
+            CameraConfig.fake_start_ping_test_threads(logging)  # test with fake local addresses
+            exit(1);
+        else:
+            cameras.start_ping_test_threads(logging)  # test with cameras ip
 
     while True:
         current_date = get_current_date()
