@@ -1,3 +1,4 @@
+import csv
 import time
 import sys
 import requests
@@ -22,7 +23,6 @@ if __name__ == '__main__':
     cameras = CameraConfig(config_path_dict[CAMERA_CONFIG_FILE])
     relay_ip = config.get_relay_ip(config_path_dict[RELAY_CONFIG_FILE])
     relay_block_ip = '192.168.1.200'
-    orari_config = OrariConfig(config_path_dict[ORARI_FILE])
 
     sigla_path_dict = config.sigla_check()
 
@@ -32,9 +32,12 @@ if __name__ == '__main__':
     # logging settings
     logging.basicConfig(filename='app.log', level=logging.DEBUG, filemode='a', format='%(asctime)s - %(message)s')
 
+    validLocations = cameras.get_valid_locations()
+    orari_config = OrariConfig(config_path_dict[ORARI_FILE], logging, validLocations)
+
     # BRANCH AND VERSION
-    branch = "ping-test"
-    version = "2.1.0"  # TODO: read from version.txt ?
+    branch = "error-report"
+    version = "2.1.1"  # TODO: read from version.txt ?
     logging.info('^^^^^ Program started (branch={},version={}) ^^^^^'.format(branch, version))
 
     # to start the ping threads:
@@ -43,18 +46,17 @@ if __name__ == '__main__':
     # local --> test fake nodes (my local LAN nodes), do not start the normal loop
     # watch the last lines of the log:
     # tail -n 15 -F app.log
-    param_local = False;
     if 'test' in sys.argv:
         if 'local' in sys.argv:
             CameraConfig.fake_start_ping_test_threads(logging)  # test with fake local addresses
-            exit(1);
+            exit(1)
         else:
             cameras.start_ping_test_threads(logging)  # test with cameras ip
 
     while True:
+        calendar = orari_config.read_file()
         current_date = get_current_date()
         current_time = get_current_time()
-        calendar = orari_config.read_file()
         active_slot = calendar.active_slot(current_date, current_time)
 
         # START EVENT: if there is an active slot

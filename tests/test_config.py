@@ -10,8 +10,8 @@ class TestConfig:
 
         config = Config("./")
         f = open(filename, "w+")
-
         ret_dict = config.config_check([filename])
+        f.close()
         os.remove(filename)
         assert ret_dict[filename]
 

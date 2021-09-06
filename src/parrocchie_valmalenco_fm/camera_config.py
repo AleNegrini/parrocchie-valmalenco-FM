@@ -80,6 +80,9 @@ class CameraConfig:
                 'pingExceptions': 0
             }
 
+    def get_valid_locations(self):
+        return self.ip_dict.keys()
+
     @staticmethod
     def ping_and_log(node, logging):
         node_id = node['id']
