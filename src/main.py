@@ -1,11 +1,10 @@
-import csv
 import time
 import sys
 import requests
 import subprocess
 import logging
 
-from parrocchie_valmalenco_fm.utils import get_current_date, get_current_time
+from datetime import datetime
 from parrocchie_valmalenco_fm.orari_config import OrariConfig
 from parrocchie_valmalenco_fm.config import Config
 from parrocchie_valmalenco_fm.camera_config import CameraConfig
@@ -33,11 +32,10 @@ if __name__ == '__main__':
     logging.basicConfig(filename='app.log', level=logging.DEBUG, filemode='a', format='%(asctime)s - %(message)s')
 
     validLocations = cameras.get_valid_locations()
-    orari_config = OrariConfig(config_path_dict[ORARI_FILE], logging, validLocations)
 
     # BRANCH AND VERSION
     branch = "error-report"
-    version = "2.1.1"  # TODO: read from version.txt ?
+    version = "2.1.2"  # TODO: read from version.txt ?
     logging.info('^^^^^ Program started (branch={},version={}) ^^^^^'.format(branch, version))
 
     # to start the ping threads:
@@ -54,10 +52,8 @@ if __name__ == '__main__':
             cameras.start_ping_test_threads(logging)  # test with cameras ip
 
     while True:
-        calendar = orari_config.read_file()
-        current_date = get_current_date()
-        current_time = get_current_time()
-        active_slot = calendar.active_slot(current_date, current_time)
+        orari_config = OrariConfig(config_path_dict[ORARI_FILE], logging, validLocations)
+        active_slot = orari_config.calendar.active_slot()
 
         # START EVENT: if there is an active slot
         if active_slot is not None:
@@ -116,8 +112,8 @@ if __name__ == '__main__':
                     proc = subprocess.Popen(['/Applications/VLC.app/Contents/MacOS/VLC ' + url +
                                              " --novideo"], shell=True)
 
-                logging.info("Started listening from " + url + " at " + current_time)
-                logging.info("Started listening from " + url + " at " + current_time)
+                logging.info("Started listening from " + url + " at " + datetime.now())
+                logging.info("Started listening from " + url + " at " + datetime.now())
                 pid_vlc = proc.pid
                 streaming_started = True
 
@@ -162,7 +158,7 @@ if __name__ == '__main__':
                     logging.info('Relay Block n_2 @' + relay_block_ip + ' stop failed')
                     pass
 
-                logging.info("Stopped " + url + " at " + current_time + " due to the mic unreachability")
+                logging.info("Stopped " + url + " at " + str(datetime.now()) + " due to the mic unreachability")
                 pid_vlc = None
                 streaming_started = False
 
@@ -206,7 +202,7 @@ if __name__ == '__main__':
             except:
                 logging.info('Relay Block n_2 @' + relay_block_ip + ' stop failed')
                 pass
-            logging.info("Stopped " + url + " at " + current_time + " due to timeout expiration")
+            logging.info("Stopped " + url + " at " + datetime.now() + " due to timeout expiration")
             pid_vlc = None
             streaming_started = False
             last_slot = None
