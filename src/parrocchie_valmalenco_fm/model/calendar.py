@@ -1,3 +1,4 @@
+import logging
 from parrocchie_valmalenco_fm.model.mass import Mass
 
 
@@ -5,6 +6,7 @@ class Calendar:
 
     def __init__(self):
         self.mass_list = []
+        self.current_active_slot = "Invalid"
 
     def check_no_overlap(self):
         """
@@ -29,13 +31,20 @@ class Calendar:
 
     def active_slot(self, date: str, time: str):
         """
-        Return active slot for a given date and time
+        Return active slot for a given date and time. Trace the changed slot in the log.
         :param date: Date in format "dd/mm/YYYY"
         :param time: Time in the format "hh:mm"
-        :return the location for the active slot
+        :return the location for the active slot, None when non acrive slots (i.e. )
         """
+        tmp_active_slot = None
+
         for mass in self.mass_list:
             if date == mass.start_day and mass.start_hour <= str(time) < mass.end_hour:
-                return mass.location
+                tmp_active_slot = mass.location
+                break
 
-        return None
+        if self.current_active_slot != tmp_active_slot:
+            logging.info("Active slot changed. New slot is: %s.", tmp_active_slot)
+        
+        self.current_active_slot = tmp_active_slot
+        return self.current_active_slot
