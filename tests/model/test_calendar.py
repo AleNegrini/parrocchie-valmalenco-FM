@@ -6,6 +6,7 @@ from parrocchie_valmalenco_fm.model.mass import Mass
 
 class TestCalendar:
 
+
     def test_validate_ok(self):
         calendar = Calendar()
 
@@ -34,6 +35,13 @@ class TestCalendar:
 
         with(pytest.raises(ValueError)):
             calendar.check_no_overlap()
+
+
+    def test_active_slot_empty(self):
+        calendar = Calendar()
+
+        assert calendar.active_slot("29/10/2020", "19:30") == None
+        assert calendar.active_slot("30/10/2020", "19:30") == None
 
     def test_active_slot(self):
         calendar = Calendar()

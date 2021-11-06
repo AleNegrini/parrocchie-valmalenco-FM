@@ -9,7 +9,7 @@ pip3 install -r requirements.txt
 
 ### To run the tests
 ```python
-python -m pytest tests
+PYTHONPATH=./src python3 -m pytest tests
 ```
 
 ### To run the program
