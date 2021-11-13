@@ -1,6 +1,5 @@
 import time
 import sys
-import requests
 import subprocess
 import logging
 
@@ -9,6 +8,7 @@ from parrocchie_valmalenco_fm.orari_config import OrariConfig
 from parrocchie_valmalenco_fm.config import Config
 from parrocchie_valmalenco_fm.camera_config import CameraConfig
 from parrocchie_valmalenco_fm.relay import Relay
+from parrocchie_valmalenco_fm.ping import Ping
 
 ORARI_FILE = 'orari.csv'
 RELAY_CONFIG_FILE = 'config-relay.ini'
@@ -69,7 +69,7 @@ if __name__ == '__main__':
             path_audio_end = sigla_path_dict[active_slot + '_fine.mp3']
 
             # the url is now eligible to be started. However, until the endpoint is not reachable, it can't be started
-            if Config.check_ping(cameras.ip_dict[active_slot]) and not streaming_started:
+            if Ping.check_ping(cameras.ip_dict[active_slot]) and not streaming_started:
 
                 # 1° Step: trigger the relays
                 relay.trigger('start')
@@ -105,7 +105,7 @@ if __name__ == '__main__':
                 pid_vlc = proc.pid
                 streaming_started = True
 
-            if not Config.check_ping(cameras.ip_dict[active_slot]) and streaming_started:
+            if not Ping.check_ping(cameras.ip_dict[active_slot]) and streaming_started:
                 if sys.platform != 'darwin':
                     # 1° Step: stop the stream
                     subprocess.Popen(['powershell.exe', 'Stop-Process -name vlc -Force'], shell=True)

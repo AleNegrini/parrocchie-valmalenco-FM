@@ -1,3 +1,4 @@
+import logging
 import csv
 
 from parrocchie_valmalenco_fm.model.mass import Mass
@@ -27,6 +28,6 @@ class OrariConfig:
                 line_count += 1
 
         self.calendar.check_no_overlap()
-        print("Calendar file is valid.")
+        logging.info("Calendar file is valid.")
 
         return self.calendar
