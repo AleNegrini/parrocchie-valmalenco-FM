@@ -8,6 +8,7 @@ from parrocchie_valmalenco_fm.utils import get_current_date, get_current_time
 from parrocchie_valmalenco_fm.orari_config import OrariConfig
 from parrocchie_valmalenco_fm.config import Config
 from parrocchie_valmalenco_fm.camera_config import CameraConfig
+from parrocchie_valmalenco_fm.relay import Relay
 
 ORARI_FILE = 'orari.csv'
 RELAY_CONFIG_FILE = 'config-relay.ini'
@@ -22,6 +23,8 @@ if __name__ == '__main__':
     cameras = CameraConfig(config_path_dict[CAMERA_CONFIG_FILE])
     relay_ip = config.get_relay_ip(config_path_dict[RELAY_CONFIG_FILE])
     relay_block_ip = '192.168.1.200'
+    relay = Relay(relay_ip, relay_block_ip)
+
     orari_config = OrariConfig(config_path_dict[ORARI_FILE])
 
     sigla_path_dict = config.sigla_check()
@@ -69,24 +72,7 @@ if __name__ == '__main__':
             if Config.check_ping(cameras.ip_dict[active_slot]) and not streaming_started:
 
                 # 1° Step: trigger the relays
-                r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
-                try:
-                    r1 = requests.get('http://' + relay_block_ip + '/3000/01')
-                    time.sleep(1)
-                    logging.info('Relay Block n_1 @' + relay_block_ip + ' start success')
-                except:
-                    logging.info('Relay Block n_1 @' + relay_block_ip + ' start failed')
-                    pass
-
-                try:
-                    r2 = requests.get('http://' + relay_block_ip + '/3000/03')
-                    time.sleep(1)
-                    logging.info('Relay Block n_2 @' + relay_block_ip + ' start success')
-                except:
-                    logging.info('Relay Block n_2 @' + relay_block_ip + ' start failed')
-                    pass
-
-                logging.info('Relay @' + relay_ip + ' triggered')
+                relay.trigger('start')
 
                 time.sleep(2)
 
@@ -143,22 +129,7 @@ if __name__ == '__main__':
                     logging.info('Playing ' + path_audio_end)
 
                 time.sleep(15)
-                r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
-                try:
-                    r1 = requests.get('http://' + relay_block_ip + '/3000/00')
-                    time.sleep(1)
-                    logging.info('Relay Block n_1 @' + relay_block_ip + ' stop success')
-                except:
-                    logging.info('Relay Block n_1 @' + relay_block_ip + ' stop failed')
-                    pass
-
-                try:
-                    r2 = requests.get('http://' + relay_block_ip + '/3000/02')
-                    time.sleep(1)
-                    logging.info('Relay Block n_2 @' + relay_block_ip + ' stop success')
-                except:
-                    logging.info('Relay Block n_2 @' + relay_block_ip + ' stop failed')
-                    pass
+                relay.trigger('stop')
 
                 logging.info("Stopped " + url + " at " + current_time + " due to the mic unreachability")
                 pid_vlc = None
@@ -188,22 +159,8 @@ if __name__ == '__main__':
                 logging.info('Playing ' + path_audio_end)
 
             time.sleep(15)
-            r = requests.post('http://' + relay_ip + '/relays.cgi?relay=1')
-
-            try:
-                r1 = requests.get('http://' + relay_block_ip + '/3000/00')
-                logging.info('Relay Block n_1 @' + relay_block_ip + ' stop success')
-                time.sleep(1)
-            except:
-                logging.info('Relay Block n_1 @' + relay_block_ip + ' stop failed')
-                pass
-            try:
-                r2 = requests.get('http://' + relay_block_ip + '/3000/02')
-                time.sleep(1)
-                logging.info('Relay Block n_2 @' + relay_block_ip + ' stop success')
-            except:
-                logging.info('Relay Block n_2 @' + relay_block_ip + ' stop failed')
-                pass
+            relay.trigger('stop')
+            
             logging.info("Stopped " + url + " at " + current_time + " due to timeout expiration")
             pid_vlc = None
             streaming_started = False
