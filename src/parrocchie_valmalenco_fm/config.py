@@ -1,6 +1,5 @@
 import os
 import configparser
-from ping3 import ping
 
 from typing import List
 
@@ -108,22 +107,3 @@ class Config:
             port: cam PORT
         """
         return 'http://' + ip + ":" + port
-
-    @staticmethod
-    def check_ping(url):
-        """
-        It checks whether a URL is reachable and returns values accordingly
-        Args:
-            url: url to test
-            timeout: timeout seconds
-        Returns:
-            It returns a boolean value. True if the URL is reachable, False otherwise.
-        """
-
-        response = ping(dest_addr=url, timeout=59)
-        if response is None:
-            print(url + " ping failed")
-            return False
-        else:
-            print(url + " ping successfull")
-            return True
